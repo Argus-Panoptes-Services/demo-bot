@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tex's Cantina — Chat With Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #1a0a00;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      height: 620px;
+    }
+
+    /* Header */
+    .chat-header {
+      background: linear-gradient(135deg, #c0392b, #8B0000);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .header-info h2 { font-size: 1rem; font-weight: 700; }
+    .header-info p { font-size: 0.75rem; opacity: 0.85; margin-top: 0.1rem; }
+    .status-dot {
+      width: 8px; height: 8px;
+      background: #2ecc71;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    /* Powered by badge */
+    .powered-by {
+      background: #8B0000;
+      text-align: center;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.6);
+      padding: 0.25rem;
+      letter-spacing: 0.05em;
+    }
+    .powered-by strong { color: rgba(255,255,255,0.9); }
+
+    /* Messages */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: #f5f0eb;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
+
+    .message {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 16px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .message.bot {
+      background: white;
+      color: #1a1a1a;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .message.user {
+      background: #c0392b;
+      color: white;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    .message strong { font-weight: 700; }
+
+    /* Typing indicator */
+    .typing {
+      display: none;
+      align-self: flex-start;
+      background: white;
+      padding: 0.65rem 1rem;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .typing span {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: #bbb;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+      margin: 0 1px;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* Quick replies */
+    .quick-replies {
+      padding: 0.6rem 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      background: #f5f0eb;
+      border-top: 1px solid #e8e0d8;
+    }
+    .quick-reply {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: #c0392b;
+      font-weight: 500;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .quick-reply:hover { background: #c0392b; color: white; border-color: #c0392b; }
+
+    /* Input */
+    .chat-input {
+      display: flex;
+      padding: 0.75rem 1rem;
+      gap: 0.5rem;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    .chat-input input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input input:focus { border-color: #c0392b; }
+    .chat-input button {
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-input button:hover { background: #a93226; }
+
+    /* Demo badge */
+    .demo-notice {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .demo-notice a { color: #c9a84c; text-decoration: none; }
+    .demo-notice a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="avatar">🌮</div>
+      <div class="header-info">
+        <h2>Tex's Cantina</h2>
+        <p><span class="status-dot"></span>AI Assistant · Always here to help</p>
+      </div>
+    </div>
+    <div class="powered-by">Powered by <strong>Argus Panoptes IT Services</strong></div>
+
+    <div class="chat-messages" id="messages">
+      <div class="message bot">👋 Hey there, welcome to <strong>Tex's Cantina!</strong> 🤠🌮
+
+I'm your virtual assistant. Ask me anything about our menu, hours, location, or specials — or just say hi!
+
+What can I help you with?</div>
+    </div>
+
+    <div class="typing" id="typing">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="quick-replies">
+      <button class="quick-reply" onclick="sendQuick('What are your hours?')">🕐 Hours</button>
+      <button class="quick-reply" onclick="sendQuick('Show me the menu')">🌮 Menu</button>
+      <button class="quick-reply" onclick="sendQuick('Any specials?')">🎉 Specials</button>
+      <button class="quick-reply" onclick="sendQuick('How do I make a reservation?')">📅 Reserve</button>
+      <button class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</button>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Ask me anything..." autocomplete="off" />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <p class="demo-notice">This is a demo powered by <a href="https://arguspanoptes.co" target="_blank">Argus Panoptes IT Services</a><br />Want this for your business? <a href="https://arguspanoptes.co" target="_blank">Let's talk →</a></p>
+
+  <script>
+    const input = document.getElementById('userInput');
+    const messages = document.getElementById('messages');
+    const typing = document.getElementById('typing');
+
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendQuick(text) {
+      input.value = text;
+      sendMessage();
+    }
+
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.className = `message ${sender}`;
+      // Basic markdown: **bold**
+      div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+
+      addMessage(text, 'user');
+
+      // Show typing
+      typing.style.display = 'block';
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+
+        // Simulate slight delay
+        await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
+        typing.style.display = 'none';
+        addMessage(data.response, 'bot');
+      } catch (err) {
+        typing.style.display = 'none';
+        addMessage("Sorry, I'm having a quick issue. Please call us at (254) 555-0192!", 'bot');
+      }
+    }
+  </script>
+
+</body>
+</html>

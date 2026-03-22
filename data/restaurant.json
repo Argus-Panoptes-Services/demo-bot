@@ -1,0 +1,50 @@
+{
+  "name": "Tex's Cantina",
+  "tagline": "Authentic Tex-Mex. Cold Beer. Good Times.",
+  "location": {
+    "address": "4210 Ranch Road, Waco, TX 76701",
+    "directions": "Right off I-35, look for the giant sombrero sign."
+  },
+  "contact": {
+    "phone": "(254) 555-0192",
+    "email": "hello@texscantina.com"
+  },
+  "hours": {
+    "monday": "11am - 9pm",
+    "tuesday": "11am - 9pm",
+    "wednesday": "11am - 9pm",
+    "thursday": "11am - 10pm",
+    "friday": "11am - 11pm",
+    "saturday": "10am - 11pm",
+    "sunday": "10am - 8pm"
+  },
+  "menu": {
+    "starters": [
+      { "name": "Queso Fundido", "price": 8.99, "description": "Melted cheese with chorizo and peppers" },
+      { "name": "Guacamole & Chips", "price": 7.99, "description": "Fresh made tableside, serves 2-4" },
+      { "name": "Jalapeño Poppers", "price": 6.99, "description": "Cream cheese stuffed, bacon wrapped" }
+    ],
+    "mains": [
+      { "name": "Brisket Tacos (3)", "price": 14.99, "description": "Slow smoked brisket, pickled onion, salsa verde" },
+      { "name": "Enchiladas Rojas", "price": 13.99, "description": "3 enchiladas, red chile sauce, rice & beans" },
+      { "name": "The Cantina Burger", "price": 12.99, "description": "1/2 lb beef, pepper jack, jalapeños, chipotle mayo" },
+      { "name": "Fajita Platter", "price": 17.99, "description": "Chicken or steak, peppers, onions, tortillas, all the fixings" },
+      { "name": "Tex's Famous Chili Bowl", "price": 11.99, "description": "Slow cooked beef chili, cornbread, sour cream" }
+    ],
+    "drinks": [
+      { "name": "Margarita (Classic)", "price": 9.99, "description": "Lime, triple sec, tequila — rocks or frozen" },
+      { "name": "Local Draft Beer", "price": 5.99, "description": "Ask your server for today's taps" },
+      { "name": "Agua Fresca", "price": 3.99, "description": "Hibiscus, cucumber-lime, or tamarind" }
+    ],
+    "specials": [
+      "🌮 Taco Tuesday: $2 tacos all day",
+      "🍺 Thursday: $4 draft beers 4-7pm",
+      "🎉 Weekend Brunch: 10am-2pm Sat & Sun — bottomless mimosas $15"
+    ]
+  },
+  "reservations": {
+    "accepted": true,
+    "note": "Reservations for parties of 6 or more. Walk-ins welcome for smaller groups.",
+    "how": "Call us at (254) 555-0192 or ask the bot to submit a request!"
+  }
+}
